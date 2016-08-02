@@ -1,4 +1,4 @@
-# excellent [Python 3](https://img.shields.io/badge/python-3-blue.svg)
+# excellent![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 
 description...
 
