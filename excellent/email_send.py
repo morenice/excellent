@@ -1,0 +1,2 @@
+class EmailSend:
+    pass

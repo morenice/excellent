@@ -1,0 +1,2 @@
+class ExcelAnalyzer:
+    pass
