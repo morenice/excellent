@@ -1,0 +1,26 @@
+config_version: 0.1
+analyzer:
+    type: condition
+    condition_group: [group_a, group_b]
+    group_a:
+        condtion_name: [test, test2]
+        test:
+            column_name: a
+            column_type: DATE
+            row_startline: 3
+            condition: today
+            value: 0
+        test2:
+            column_name: a
+            column_type: DATE
+            row_startline: 3
+            condition: today
+            value: -1
+    group_b:
+        name: [aaa]
+        aaa:
+            column_name: c
+            column_type: DATE
+            row_startline: 3
+            condition: today
+            value: 0

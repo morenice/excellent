@@ -7,15 +7,12 @@ class ConditionAnalyzer(ExcelAnalyzer):
     row_startline = 0
 
 
-class IntCondition(ConditionAnalyzer):
-    condition = ["==", "!=", "<=", "<", ">", ">="]
-    value = -1
-
-    def __init__(col_name, col_value, row_start):
-        pass
-
-
 class DateCondition(ConditionAnalyzer):
+    """ TODO!! first"""
+    pass
+
+
+class IntCondition(ConditionAnalyzer):
     pass
 
 
