@@ -1,0 +1,3 @@
+import excellent
+
+excellent.main()

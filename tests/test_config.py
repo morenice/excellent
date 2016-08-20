@@ -13,7 +13,11 @@ class TestConfig(unittest.TestCase):
 
     def test_no_yml_file(self):
         conf = Config(self.data_path + "no_yml_file.yml")
-        self.assertEqual(conf.read(), -3)
+        self.assertEqual(conf.read(), -1)
+
+    def test_no_file(self):
+        conf = Config(self.data_path + "no_file.yml")
+        self.assertEqual(conf.read(), -2)
 
     def test_success_analyzer_and_action(self):
         conf = Config(self.data_path + "success_analyze_action.yml")

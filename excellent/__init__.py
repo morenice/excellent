@@ -1,6 +1,7 @@
 """
 Excel third-party extensions
 """
+from excellent.core import main
 
 __author__ = 'morenice'
 __module_name__ = 'excellent'

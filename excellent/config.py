@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import yaml
 
 
@@ -14,7 +15,7 @@ class Config:
             with open(self.filename, encoding="utf-8") as f:
                 config = yaml.load(f.read())
 
-            if config['config_version'] is None:
+            if 'config_version' not in config:
                 return -1
 
             if 'analyzer' in config:
@@ -25,7 +26,6 @@ class Config:
         except FileNotFoundError as ex:
             return -2
         except Exception as ex:
-            # parsing fail and etc ...
             return -3
 
         return 0
