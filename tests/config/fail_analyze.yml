@@ -1,6 +1,5 @@
 config_version: 0.1
-analyzer:
-    type: condition
+analyzer_typo:
     condition_group: [group_a, group_b]
     group_a:
         condtion_name: [test, test2]
@@ -8,7 +7,7 @@ analyzer:
             column_name: a
             column_type: DATE
             row_startline: 3
-            condition: today
+            condition: dday
             value: 0
     group_b:
         name: [aaa]
@@ -16,5 +15,5 @@ analyzer:
             column_name: c
             column_type: DATE
             row_startline: 3
-            condition: today
+            condition: dday
             value: 0

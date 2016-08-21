@@ -19,7 +19,7 @@ class Config:
                 return -1
 
             if 'analyzer' in config:
-                self.action_confanalyzer_conf = config['analyzer']
+                self.analyzer_conf = config['analyzer']
             if 'action' in config:
                 self.action_conf = config['action']
 

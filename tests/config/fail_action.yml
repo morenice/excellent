@@ -1,5 +1,5 @@
 config_version: 0.1
-action:
+action_typo:
     type: email
     email_config:
         subject: read me!

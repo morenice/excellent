@@ -10,7 +10,6 @@ import excellent.action
 
 
 class Excellent(object):
-    """ """
     analyzer = None
     action = None
     filename = None
@@ -26,42 +25,40 @@ class Excellent(object):
         self.filedata = None
 
     def analyze(self):
-        pass
-
-    def do_action(self):
-        pass
+        if analyzer.analyze():
+            action.do()
 
 
-def parse_args(args):
-    try:
-        opts, args = getopt.getopt(args, "c:f:V")
-    except:
-        # show usage and program exit!
-        usage()
-        sys.exit(0)
+class ExcellentOpts:
+    def parse_args(self, args):
+        try:
+            opts, args = getopt.getopt(args, "c:f:V")
+        except:
+            # show usage and return!!
+            self.usage()
+            return (None, None)
 
-    conf_file = xls_file = ""
-    for opt, arg in opts:
-        if opt == "-V":
-            # show version and program exit!
-            print(excellent.__version__)
-            sys.exit(0)
-        elif opt == "-c":
-            conf_file = arg
-        elif opt == "-f":
-            xls_file = arg
+        conf_file = xls_file = ""
+        for opt, arg in opts:
+            if opt == "-V":
+                # show version and return!!
+                self.show_version()
+                return (None, None)
+            elif opt == "-c":
+                conf_file = arg
+            elif opt == "-f":
+                xls_file = arg
 
-    # need conf filename and excel filename
-    if len(conf_file) == 0 or len(xls_file) == 0:
-        # show usage and program exit!
-        usage()
-        sys.exit(0)
+        # need conf filename and excel filename
+        if len(conf_file) == 0 or len(xls_file) == 0:
+            # show usage and return!!
+            self.usage()
+            return (None, None)
 
-    return (conf_file, xls_file)
+        return (conf_file, xls_file)
 
-
-def usage():
-    print("""
+    def usage(self):
+        print("""
 Usage: %s -c [file] -f [file]
 
  -c\tyaml style configure file.
@@ -72,27 +69,37 @@ Example:
  %s -c configure.yml -f target.xlsx
  %s -V
 """ % (sys.argv[0], sys.argv[0], sys.argv[0])
-          )
+              )
 
+    def show_version(self):
+        print(excellent.__version__)
 
-def validate_xls_file(xls_file):
-    try:
-        openpyxl.load_workbook(filename = xls_file)
-    except Exception as e:
-        print(e)
-        return False
-    return True
+    def validate_xls_file(self, xls_file):
+        try:
+            openpyxl.load_workbook(filename = xls_file)
+        except Exception as e:
+            print(e)
+            return False
+        return True
 
 
 def main():
     # TODO : need return type!!
+    ex_opts = ExcellentOpts()
     if len(sys.argv) <= 1:
-        return usage()
+        return ex_opts.usage()
 
-    conf_file, xls_file = parse_args(sys.argv[1:])
-    if validate_xls_file(xls_file) == False:
+    conf_file, xls_file = ex_opts.parse_args(sys.argv[1:])
+    if ex_opts.validate_xls_file(xls_file) == False:
         return -1
 
     config = excellent.Config(conf_file)
     if config.read() != 0:
         return -2
+
+    analyzer = excellent.analyzer.Analyzer(config.get_analyzer_conf())
+    action = excellent.action.Action(config.get_action_conf())
+
+    exc = Excellent(analyzer, action)
+    exc.set_file(xls_file)
+    exc.analyze()
