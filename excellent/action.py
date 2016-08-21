@@ -1,2 +1,5 @@
+from abc import ABCMeta, abstractmethod
+
+
 class Action:
-    pass
+    __metaclass__ = ABCMeta

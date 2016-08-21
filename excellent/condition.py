@@ -3,21 +3,27 @@ from abc import abstractmethod
 from enum import Enum
 
 
-class CondtionGroup():
+class ConditionGroup():
     condition_list = []
 
     def __init__(self, conf):
-        self.parse_conf(conf)
+        self._parse_conf(conf)
 
-    def parse_conf(self):
+    def _parse_conf(self, data):
         pass
 
     def _create_condition(self):
         pass
 
-    def analyze(self):
+    def match(self):
+        match_result = True
         for condition in self.condition_list:
-            condition.analyze()
+            # and logic in group
+            match_result &= condition.match()
+        return match_result
+
+    def count(self):
+        return len(self.condition_list)
 
 
 class ColumnType(Enum):
@@ -35,8 +41,14 @@ class Condtion(object):
         self.column_name = column_name
         self.row_startline = row_startline
 
+    def get_column_name(self):
+        return self.column_name
+
+    def get_column_type(self):
+        return self.column_type
+
     @abstractmethod
-    def analyze(self):
+    def match(self, data):
         pass
 
 
@@ -48,15 +60,30 @@ class DateCondition(Condtion):
         self.column_type = ColumnType.date
         super().__init__(column_name, row_startline)
 
-    def analyze(self):
+    def match(self, data):
         pass
 
 
 # TODO
 class IntCondition(Condtion):
-    pass
+    condition = None
+    value = 0
 
+    def __init__(self, column_name, row_startline):
+        self.column_type = ColumnType.integer
+        super().__init__(column_name, row_startline)
+
+    def match(self, data):
+        pass
 
 # TODO
 class StringCondition(Condtion):
-    pass
+    condition = None
+    value = 0
+
+    def __init__(self, column_name, row_startline):
+        self.column_type = ColumnType.string
+        super().__init__(column_name, row_startline)
+
+    def match_data(self, data):
+        pass
