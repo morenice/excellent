@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
 import getopt
-import openpyxl
-
 import excellent
 import excellent.config
 import excellent.analyzer
@@ -12,19 +10,19 @@ import excellent.action
 class Excellent(object):
     analyzer = None
     action = None
-    filename = None
-    filedata = None
+    xls_filename = None
 
     def __init__(self, analyzer, action):
         self.analyzer = analyzer
         self.action = action
 
-    def set_file(self, filename):
-        # set filename and filedata
-        self.filename = filename
-        self.filedata = None
+    def set_excel_file(self, xls_filename):
+        if self.analyzer.set_excel_file(xls_filename):
+            self.xls_filename = xls_filename
+            return True
+        return False
 
-    def analyze(self):
+    def process(self):
         if analyzer.analyze():
             action.do()
 
@@ -74,32 +72,28 @@ Example:
     def show_version(self):
         print(excellent.__version__)
 
-    def validate_xls_file(self, xls_file):
-        try:
-            openpyxl.load_workbook(filename = xls_file)
-        except Exception as e:
-            print(e)
-            return False
-        return True
-
 
 def main():
-    # TODO : need return type!!
     ex_opts = ExcellentOpts()
     if len(sys.argv) <= 1:
         return ex_opts.usage()
 
     conf_file, xls_file = ex_opts.parse_args(sys.argv[1:])
-    if ex_opts.validate_xls_file(xls_file) == False:
-        return -1
+
+    # show usage or version info. program exit.
+    if conf_file is None and xls_file is None:
+        return 0
 
     config = excellent.Config(conf_file)
     if config.read() != 0:
-        return -2
+        return 255
 
     analyzer = excellent.analyzer.Analyzer(config.get_analyzer_conf())
     action = excellent.action.Action(config.get_action_conf())
 
-    exc = Excellent(analyzer, action)
-    exc.set_file(xls_file)
-    exc.analyze()
+    excellent = Excellent(analyzer, action)
+    if excellent.set_file(xls_file) == False:
+        return 255
+
+    excellent.process()
+    return 0

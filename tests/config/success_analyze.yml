@@ -2,18 +2,18 @@ config_version: 0.1
 analyzer:
     condition_group: [group_a, group_b]
     group_a:
-        condtion_name: [test]
+        condition_name: [test]
         test:
             column_name: a
-            column_type: DATE
-            row_startline: 3
+            column_type: date
+            row_startline: 2
             condition: before_today
             value: 5
     group_b:
-        name: [test]
+        condition_name: [test]
         test:
-            column_name: c
-            column_type: DATE
-            row_startline: 3
+            column_name: a
+            column_type: date
+            row_startline: 2
             condition: before_today
             value: 3

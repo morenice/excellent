@@ -1,29 +1,41 @@
 # -*- coding: utf-8 -*-
 from abc import abstractmethod
 from enum import Enum
+from excellent.config_define import *
 
 
 class ConditionGroup():
+    group_name = ""
     condition_list = []
 
-    def __init__(self, conf):
-        self._parse_conf(conf)
+    def __init__(self, group_conf):
+        self._parse_conf(group_conf)
 
-    def _parse_conf(self, data):
-        pass
+    def _parse_conf(self, conf):
+        for cond_name in conf[CONDITION_NAME]:
+            cond = self._create_condition(conf[cond_name])
+            if cond is not None:
+                self.condition_list.append(cond)
 
-    def _create_condition(self):
-        pass
+    def _create_condition(self, cond_conf):
+        if cond_conf[COLUMN_TYPE] == ColumnType.date.name:
+            cond = DateCondition(cond_conf)
+        elif cond_conf[COLUMN_TYPE] == ColumnType.integer.name:
+            cond = IntCondition(cond_conf)
+        elif cond_conf[COLUMN_TYPE] == ColumnType.string.name:
+            cond = StringCondition(cond_conf)
 
-    def match(self):
-        match_result = True
-        for condition in self.condition_list:
-            # and logic in group
-            match_result &= condition.match()
-        return match_result
+        return cond
 
     def count(self):
         return len(self.condition_list)
+
+    def match(self, row_data):
+        match_result = True
+        for condition in self.condition_list:
+            # 'AND" logic per condition
+            match_result &= condition.match()
+        return match_result
 
 
 class ColumnType(Enum):
@@ -36,10 +48,14 @@ class Condtion(object):
     column_name = ""
     column_type = None
     row_startline = 0
+    condition = None
+    value = None
 
-    def __init__(self, column_name, row_startline):
-        self.column_name = column_name
-        self.row_startline = row_startline
+    def __init__(self, cond_conf):
+        self.column_name = cond_conf[COLUMN_NAME]
+        self.row_startline = cond_conf[ROW_STARTLINE]
+        self.condition = cond_conf[CONDITION]
+        self.value = cond_conf[CONDITION_VALUE]
 
     def get_column_name(self):
         return self.column_name
@@ -53,12 +69,10 @@ class Condtion(object):
 
 
 class DateCondition(Condtion):
-    condition = None
-    value = 0
 
-    def __init__(self, column_name, row_startline):
+    def __init__(self, cond_conf):
         self.column_type = ColumnType.date
-        super().__init__(column_name, row_startline)
+        super().__init__(cond_conf)
 
     def match(self, data):
         pass
@@ -66,8 +80,6 @@ class DateCondition(Condtion):
 
 # TODO
 class IntCondition(Condtion):
-    condition = None
-    value = 0
 
     def __init__(self, column_name, row_startline):
         self.column_type = ColumnType.integer
@@ -76,10 +88,9 @@ class IntCondition(Condtion):
     def match(self, data):
         pass
 
+
 # TODO
 class StringCondition(Condtion):
-    condition = None
-    value = 0
 
     def __init__(self, column_name, row_startline):
         self.column_type = ColumnType.string

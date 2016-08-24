@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import yaml
+from excellent.config_define import *
 
 
 class Config:
@@ -10,22 +11,45 @@ class Config:
     def __init__(self, filename):
         self.filename = filename
 
+    def _validate(self, config):
+        if 'config_version' not in config:
+            return False
+        return True
+
+    def _read(self, config):
+        if 'analyzer' in config:
+            self.analyzer_conf = config[ANALYZER]
+        if 'action' in config:
+            self.action_conf = config[ACTION]
+
     def read(self):
         try:
             with open(self.filename, encoding="utf-8") as f:
                 config = yaml.load(f.read())
 
-            if 'config_version' not in config:
+            if self._validate(config) == False:
                 return -1
 
-            if 'analyzer' in config:
-                self.analyzer_conf = config['analyzer']
-            if 'action' in config:
-                self.action_conf = config['action']
-
+            self._read(config)
         except FileNotFoundError as ex:
             return -2
         except Exception as ex:
+            print(ex)
+            return -3
+
+        return 0
+
+    def read_raw_data(self, raw_data):
+        try:
+            config = yaml.load(raw_data)
+
+            if self._validate(config) == False:
+                return -1
+
+            self._read(config)
+
+        except Exception as ex:
+            print(ex)
             return -3
 
         return 0
