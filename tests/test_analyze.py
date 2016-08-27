@@ -2,55 +2,118 @@ import unittest
 from excellent.analyzer import *
 from excellent.condition import *
 from excellent.config import *
-from openpyxl import Workbook
+
+
+def create_condition(config_string, cond_name, criteria_date):
+    condition_conf = yaml.load(config_string)
+    cond = DateCondition(cond_name, condition_conf[cond_name])
+    cond.set_criteria_date(criteria_date)
+    return cond
 
 
 class AnalyzerTestCase(unittest.TestCase):
-    analyzer = None
 
-    def setUp(self):
+    def test_config_group_count_from_text(self):
         config_string = """
 config_version: 0.1
 analyzer:
-    condition_group: [group_a, group_b]
-    group_a:
-        condition_name: [test]
-        test:
+    - group_a:
+        - test:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: before_today
+            condition: days_ago
             value: 5
-    group_b:
-        condition_name: [test]
-        test:
+    - group_b:
+        - test:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: before_today
+            condition: days_ago
             value: 3
 """
         config = Config(None)
         config.read_raw_data(config_string)
-        self.analyzer = Analyzer(config.get_analyzer_conf())
 
-    def test_analyze_group_count(self):
-        self.assertEqual(self.analyzer.count(), 2)
+        analyzer = Analyzer(config.get_analyzer_conf())
+        self.assertEqual(analyzer.count_condition_group(), 2)
 
-    def test_success_match(self):
+    def test_config_group_count_from_xlsfile(self):
+        # TODO!
+        pass
+
+    def test_analyze_fail_no_xlsdata(self):
+        config_string = """
+config_version: 0.1
+analyzer:
+    - group_a:
+        - test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: days_ago
+            value: 5
+    - group_b:
+        - test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: days_ago
+            value: 3
+"""
+        config = Config(None)
+        config.read_raw_data(config_string)
+
+        analyzer = Analyzer(config.get_analyzer_conf())
+        self.assertEqual(analyzer.analyze(), False)
+
+    def test_analyze(self):
+        analyzer = Analyzer(None)
+        group = ConditionGroup("group1", None)
+        group2 = ConditionGroup("group2", None)
+
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: days_ago
+            value: 3
+"""
+        date = datetime.datetime(2016, 5, 14)
+        cond = create_condition(config_string, 'test', date)
+        group.add_condition(cond)
+
+        config_string2 = """
+        test2:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: days_ago
+            value: 5
+"""
+        date2 = datetime.datetime(2016, 5, 14)
+        cond2 = create_condition(config_string2, 'test2', date2)
+        group2.add_condition(cond2)
+
+        analyzer.add_condition_group(group)
+        analyzer.add_condition_group(group2)
+
         wb = Workbook()
-        ws = wb.create_sheet()
-        ws['A1'] = 'due-date'
-        ws['A2'] = '2016-05-10'
-        ws['A3'] = '2016-04-10'
-        ws['A4'] = '2017-02-13'
-        self.analyzer.set_excel_workbook(wb)
-        self.assertEqual(self.analyzer.analyze(), True)
+        ws1 = wb.active
+        ws1.title = "worksheet1"
+        ws1['A1'] = 'Due date'
+        ws1['A2'] = datetime.datetime(2016, 5, 17)
+        ws1['A3'] = datetime.datetime(2016, 5, 19)
+        ws1['A4'] = datetime.datetime(2017, 6, 21)
+        ws1['A5'] = datetime.datetime(2016, 5, 17)
+        ws1['B1'] = 'Name'
+        ws1['B2'] = 'Tony'
+        ws1['B3'] = 'Mike'
+        ws1['B4'] = 'Lee'
+        ws1['B5'] = 'Kim'
 
-    def test_fail_match(self):
-        wb = Workbook()
-        ws = wb.create_sheet()
-        ws['A1'] = 'due-date'
-        ws['A2'] = 'hello'
-        ws['A3'] = 'bye'
-        self.assertEqual(self.analyzer.analyze(), False)
+        analyzer.set_excel_workbook(wb)
+
+        self.assertEqual(analyzer.analyze(), True)
+        self.assertEqual(analyzer.count_analyze_data(), 3)

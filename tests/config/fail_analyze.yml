@@ -1,17 +1,14 @@
 config_version: 0.1
 analyzer_typo:
-    condition_group: [group_a, group_b]
-    group_a:
-        condition_name: [test, test2]
-        test5:
+    - group_a:
+        - test5:
             column_name: a
             column_type: date
             row_startline: 3
             condition: dday
             value: 0
-    group_b:
-        condition_name: [aaa]
-        aaa:
+    - group_b:
+        - aaa:
             column_name: c
             column_type: date
             row_startline: 3

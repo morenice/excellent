@@ -1,21 +1,18 @@
 config_version: 0.1
 analyzer:
-    condition_group: [group_a, group_b]
-    group_a:
-        condition_name: [test]
-        test:
+    - group_a:
+        - test:
             column_name: a
             column_type: date
             row_startline: 3
-            condition: before_today
+            condition: days_ago
             value: 3
-    group_b:
-        condition_name: [aaa]
-        aaa:
+    - group_b:
+        - aaa:
             column_name: b
             column_type: date
             row_startline: 3
-            condition: after_today
+            condition: days_later
             value: 2
 action:
     type: email
