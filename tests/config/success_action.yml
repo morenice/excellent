@@ -2,11 +2,16 @@ config_version: 0.1
 action:
     type: email
     email_config:
-        subject: read me!
-        from: from@test.com
+        subject: please read!!
+        from: t_account@hotmail.com
         to: to@test.com
-        smtp: 1.1.1.1
+        smtp: smtp.live.com:587
+        smtp_account: t_account@hotmail.com
+        smtp_password : ThisIsPassword
         msg: |
             hello
-            expired time $B $C
+            expired time ...
+            $import_data
             thank you
+        import_data: |
+            $B $C

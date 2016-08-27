@@ -4,22 +4,21 @@ from excellent.config_define import *
 
 
 class Config:
-    filename = ""
-    analyzer_conf = None
-    action_conf = None
 
     def __init__(self, filename):
         self.filename = filename
+        self.analyzer_conf = None
+        self.action_conf = None
 
     def _validate(self, config):
-        if 'config_version' not in config:
+        if CONFIG_VERSION not in config:
             return False
         return True
 
     def _read(self, config):
-        if 'analyzer' in config:
+        if ANALYZER in config:
             self.analyzer_conf = config[ANALYZER]
-        if 'action' in config:
+        if ACTION in config:
             self.action_conf = config[ACTION]
 
     def read(self):

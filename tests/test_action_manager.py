@@ -1,19 +1,13 @@
+import unittest
+from excellent.action_manager import *
+from excellent.config import *
+
+
+class ActionManagerTestCase(unittest.TestCase):
+
+    def test_parse_email_conf(self):
+        config_string = """
 config_version: 0.1
-analyzer:
-    - group_a:
-        - test:
-            column_name: a
-            column_type: date
-            row_startline: 3
-            condition: days_ago
-            value: 3
-    - group_b:
-        - aaa:
-            column_name: b
-            column_type: date
-            row_startline: 3
-            condition: days_later
-            value: 2
 action:
     type: email
     email_config:
@@ -30,3 +24,9 @@ action:
             thank you
         import_data: |
             $B $C
+"""
+        config = Config(None)
+        config.read_raw_data(config_string)
+
+        am = ActionManager(config.get_action_conf())
+        self.assertEqual(am.get_action_type(), ACTION_EMAIL)

@@ -59,8 +59,8 @@ class ConditionGroup:
         return self.condition_list.remove(cond)
 
     def match(self, row):
-        # TODO : change search of all cell to search of only condition cell
-        # 'AND" logic per condition
+        # TODO : change search of all cell to condition cell
+        # 'AND" logic : the conditions must all be true
         for cell in row:
             for cond in self.condition_list:
                 result = cond.match(cell)
@@ -121,8 +121,8 @@ class DateCondition(Condtion):
         if self.condition == "days_ago":
             days_ago = data.value - datetime.timedelta(int(self.value))
             if days_ago.year == self.criteria_date.year and \
-                days_ago.month == self.criteria_date.month and \
-                days_ago.day == self.criteria_date.day:
+                    days_ago.month == self.criteria_date.month and \
+                    days_ago.day == self.criteria_date.day:
                 return MatchResult.match
             else:
                 return MatchResult.no_match

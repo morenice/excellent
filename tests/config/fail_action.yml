@@ -3,7 +3,7 @@ action_typo:
     type: email
     email_config:
         subject: read me!
-        smtp: 1.1.1.1
+        smtp: 1.1.1.1:587
         msg: |
             hello
             expired time $B $C

@@ -46,7 +46,6 @@ class Analyzer:
 
     def set_excel_workbook(self, workbook):
         self.excel_workbook = workbook
-        return True
 
     def analyze(self):
         if self.excel_workbook is None:
@@ -61,13 +60,10 @@ class Analyzer:
             for group in self.condition_group_list:
                 # 'OR' logic per group
                 if group.match(row):
-                    self._append_analyze_data(row)
+                    self.analyze_data.append(row)
                     break
 
         return True
-
-    def _append_analyze_data(self, row):
-        self.analyze_data.append(row)
 
     def get_analyze_data(self):
         return self.analyze_data

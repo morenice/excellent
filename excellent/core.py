@@ -8,13 +8,10 @@ import excellent.action
 
 
 class Excellent(object):
-    analyzer = None
-    action = None
-    xls_filename = None
-
-    def __init__(self, analyzer, action):
+    def __init__(self, analyzer, action_manager):
         self.analyzer = analyzer
-        self.action = action
+        self.action_manager = action_manager
+        self.xls_filename = None
 
     def set_excel_file(self, xls_filename):
         if self.analyzer.set_excel_file(xls_filename):
@@ -23,8 +20,8 @@ class Excellent(object):
         return False
 
     def process(self):
-        if analyzer.analyze():
-            action.do()
+        if self.analyzer.analyze():
+            self.action_manager.do_action()
 
 
 class ExcellentOpts:
@@ -89,9 +86,9 @@ def main():
         return 255
 
     analyzer = excellent.analyzer.Analyzer(config.get_analyzer_conf())
-    action = excellent.action.Action(config.get_action_conf())
+    action_manager = excellent.action.ActionManager(config.get_action_conf())
 
-    excellent = Excellent(analyzer, action)
+    excellent = Excellent(analyzer, action_manager)
     if excellent.set_file(xls_file) == False:
         return 255
 
