@@ -1,2 +1,2 @@
-openpyxl
-pyYAML
+openpyxl >= 2.3.5
+pyYAML >= 3.11
