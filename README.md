@@ -8,7 +8,7 @@ excel third-party python program
 ## Install
 ### Requirements:
 * `python` >= 3.5 and `git`
-* `openpyxl` : for excel data read
+* `openpyxl` : for excel data read(not support xls format)
 * `pyYAML` : for configuration
 
 
