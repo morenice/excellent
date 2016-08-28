@@ -22,8 +22,6 @@ action:
             expired time ...
             $import_data
             thank you
-        import_data: |
-            $B $C
 """
         config = Config(None)
         config.read_raw_data(config_string)

@@ -28,5 +28,3 @@ action:
             expired time ...
             $import_data
             thank you
-        import_data: |
-            $B $C

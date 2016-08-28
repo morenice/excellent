@@ -36,14 +36,23 @@ class EmailAction(Action):
 
         self.subject = email_conf[EMAIL_SUBJECT]
         self.msg = email_conf[EMAIL_MSG]
-        self.import_data = email_conf[EMAIL_IMPORT_DATA]
 
     def _make_send_msg(self, data):
-        # 1. replace data to new_msg
-        # 2. replace new_msg to import_msg of msg
-        return self.msg
+        # replace word to value
+        replaced_format_data = ""
+        for row in data:
+            for cell in row:
+                if cell.value is None:
+                    continue
+                replaced_format_data += str(cell.value)
+                replaced_format_data += ' '
+            replaced_format_data += '\n'
 
-    def _send(self, data):
+        # replace import_data
+        new_msg = self.msg.replace('$import_data', replaced_format_data)
+        return new_msg
+
+    def _send(self, msg_content):
         # reference
         # - https://docs.python.org/3/library/email-examples.html
         send_msg = EmailMessage()
@@ -52,7 +61,7 @@ class EmailAction(Action):
         # TODO: multiple 'email_to' => support list
         send_msg['To'] = self.email_to
         send_msg['Subject'] = self.subject
-        send_msg.set_content(self._make_send_msg(data))
+        send_msg.set_content(msg_content)
 
         s = smtplib.SMTP(self.smtp_server, self.smtp_port)
 
@@ -71,4 +80,5 @@ class EmailAction(Action):
         s.quit()
 
     def do(self, data):
-        self._send(data)
+        msg_content = self._make_send_msg(data)
+        self._send(msg_content)

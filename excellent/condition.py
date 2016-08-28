@@ -130,11 +130,11 @@ class DateCondition(Condtion):
         return MatchResult.no_match
 
 
-# TODO
+# TODO: integer
 class IntCondition(Condtion):
     pass
 
 
-# TODO
+# TODO: string
 class StringCondition(Condtion):
     pass
