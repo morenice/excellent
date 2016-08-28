@@ -25,7 +25,7 @@ install :
 
 uninstall :
 	@echo "Uninstall $(MODULE_NAME) ..."
-	#$(PYTHON) setup.py install --record uninstall.txt
+	$(PYTHON) setup.py install --record uninstall.txt
 	cat uninstall.txt | xargs rm -rf
 
 clean :
