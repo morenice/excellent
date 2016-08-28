@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import excellent.condition
 from excellent.config_define import *
-from openpyxl import Workbook
+import openpyxl
 
 
 class Analyzer:

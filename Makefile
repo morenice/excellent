@@ -19,14 +19,16 @@ tests :
 	@$(PYTHON) -m unittest discover -v
 
 install :
-	#TODO
 	@echo "Install $(MODULE_NAME) ..."
+	$(PYTHON) setup.py build
+	$(PYTHON) setup.py install
 
 uninstall :
-	#TODO
 	@echo "Uninstall $(MODULE_NAME) ..."
+	#$(PYTHON) setup.py install --record uninstall.txt
+	cat uninstall.txt | xargs rm -rf
 
 clean :
 	@(cd excellent; rm -f *.pyc)
 	@(cd tests; rm -f *.pyc)
-
+	@(rm -rf build/ dist/ *.egg-info/)

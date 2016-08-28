@@ -1,0 +1,30 @@
+config_version: 0.1
+analyzer:
+    - group_a:
+        - test1:
+            column_name: f
+            column_type: date
+            row_startline: 9
+            condition: days_ago
+            value: 3
+    - group_b:
+        - test2:
+            column_name: f
+            column_type: date
+            row_startline: 9
+            condition: days_later
+            value: 5
+action:
+    type: email
+    email_config:
+        subject: please read!!
+        from: t_account@hotmail.com
+        to: to@test.com
+        smtp: smtp.live.com:587
+        smtp_account: t_account@hotmail.com
+        smtp_password : ThisIsPassword
+        msg: |
+            hello
+            expired time ...
+            $import_data
+            thank you

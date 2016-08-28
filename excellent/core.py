@@ -4,7 +4,7 @@ import getopt
 import excellent
 import excellent.config
 import excellent.analyzer
-import excellent.action
+import excellent.action_manager
 
 
 class Excellent(object):
@@ -20,8 +20,16 @@ class Excellent(object):
         return False
 
     def process(self):
+        print(" - process analyze ...")
         if self.analyzer.analyze():
-            self.action_manager.do_action()
+            if self.analyzer.count_analyze_data() == 0:
+                print("Complete")
+                print("no action data. please confirm analyzed data...")
+                return
+
+            print(" - do action ...")
+            self.action_manager.do_action(self.analyzer.get_analyze_data())
+            print("Complete")
 
 
 class ExcellentOpts:
@@ -81,16 +89,22 @@ def main():
     if conf_file is None and xls_file is None:
         return 0
 
-    config = excellent.Config(conf_file)
+    print(" - '%s' config file" % (conf_file))
+    print(" - '%s' excel file " % (xls_file))
+
+    print(" - read config file ...")
+    config = excellent.config.Config(conf_file)
     if config.read() != 0:
         return 255
 
+    print(" - prepare analyze and action ...")
     analyzer = excellent.analyzer.Analyzer(config.get_analyzer_conf())
-    action_manager = excellent.action.ActionManager(config.get_action_conf())
+    action_manager = excellent.action_manager.ActionManager(config.get_action_conf())
 
-    excellent = Excellent(analyzer, action_manager)
-    if excellent.set_file(xls_file) == False:
+    print(" - validation excel file ... ")
+    ex = Excellent(analyzer, action_manager)
+    if ex.set_excel_file(xls_file) == False:
         return 255
 
-    excellent.process()
+    ex.process()
     return 0

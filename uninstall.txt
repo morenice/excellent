@@ -1,0 +1,2 @@
+/usr/local/lib/python3.5/site-packages/excellent-0.1.0-py3.5.egg
+/usr/local/bin/excellent

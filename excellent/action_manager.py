@@ -18,5 +18,5 @@ class ActionManager:
     def add_action(self, action):
         self.action = action
 
-    def do_action(self):
-        return self.action.do()
+    def do_action(self, data):
+        return self.action.do(data)
