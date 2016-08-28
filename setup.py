@@ -1,12 +1,14 @@
 from setuptools import setup
 from setuptools import find_packages
+import os
 import excellent
+
 
 SCRIPTS = ['bin/excellent']
 
 # On Windows we also need additional batch files to run the above scripts
-#if os.name == "nt":
-#    SCRIPTS += ['bin/excellent.bat']
+if os.name == "nt":
+    SCRIPTS += ['bin/excellent.bat']
 
 setup(name=excellent.__module_name__,
       version=excellent.__version__,

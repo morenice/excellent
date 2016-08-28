@@ -1,23 +1,21 @@
 # excellent ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 
 excel third-party python program
-1. Read excel file and configuration file.
-2. To classify the matched data in setting conditions.
-3. Extern integration - notify email
+* Read excel file and configuration file.
+* To classify the matched data in setting conditions.
+* Extern integration - notify email
 
 ## Install
 ### Requirements:
-* `python3` and `git`
+* `python` >= 3.5 and `git`
 * `openpyxl` : for excel data read
 * `pyYAML` : for configuration
 
-### MacOS
-* git clone https://github.com/excellent.git
-* pip3 install -r excellent/requirements.txt
-* pip3 install -e git+https://github.com/excellent.git#egg=excellent
 
-### Windows
-* ...
+download and pip
+* git clone https://github.com/[USER]/excellent.git
+* pip3 install -r excellent/requirements.txt
+* pip3 install -e git+https://github.com/[USER]/excellent.git#egg=excellent
 
 
 ## Usage
@@ -29,8 +27,8 @@ Usage: excellent -c [file] -f [file]
  -V     show version.
 
 Example:
- ./a -c configure.yml -f target.xlsx
- ./a -V
+ excellent -c configure.yml -f target.xlsx
+ excellent -V
 ```
 
 ### Configuration
