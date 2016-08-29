@@ -1,4 +1,5 @@
 import unittest
+import openpyxl
 from excellent.analyzer import *
 from excellent.condition import *
 from excellent.config import *
@@ -99,7 +100,7 @@ analyzer:
         analyzer.add_condition_group(group)
         analyzer.add_condition_group(group2)
 
-        wb = Workbook()
+        wb = openpyxl.Workbook()
         ws1 = wb.active
         ws1.title = "worksheet1"
         ws1['A1'] = 'Due date'
