@@ -3,7 +3,7 @@
 from abc import ABCMeta, abstractmethod
 from email.message import EmailMessage
 import smtplib
-from excellent.config_define import *
+from exceltp.config_define import *
 
 
 class Action:

@@ -1,8 +1,8 @@
 import unittest
 import openpyxl
-from excellent.analyzer import *
-from excellent.condition import *
-from excellent.config import *
+from exceltp.analyzer import *
+from exceltp.condition import *
+from exceltp.config import *
 
 
 def create_condition(config_string, cond_name, criteria_date):

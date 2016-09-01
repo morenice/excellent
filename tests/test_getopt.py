@@ -1,8 +1,8 @@
 import unittest
-import excellent.core
+import exceltp.core
 
 
-class TestExcellentOpts(excellent.core.ExcellentOpts):
+class TestExcellentOpts(exceltp.core.ExcellentOpts):
     def usage(self):
         pass
 

@@ -1,14 +1,11 @@
 .PHONY : all clean tests install uninstall
 
-MODULE_NAME=excellent
+MODULE_NAME=exceltp
 VERSION=$(shell grep __version__ $(MODULE_NAME)/__init__.py | awk '{print $$3}' | sed -e s/\'//g)
 PYTHON=python3
 PIP=pip3
 
 all : tests
-
-run :
-	@$(PYTHON) excellent.py
 
 init :
 	@echo "Inatll requirements ..."
@@ -29,6 +26,6 @@ uninstall :
 	cat uninstall.txt | xargs rm -rf
 
 clean :
-	@(cd excellent; rm -f *.pyc)
+	@(cd $(MODULE_NAME); rm -f *.pyc)
 	@(cd tests; rm -f *.pyc)
 	@(rm -rf build/ dist/ *.egg-info/)

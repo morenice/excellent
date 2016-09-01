@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import yaml
-from excellent.config_define import *
+from exceltp.config_define import *
 
 
 class Config:

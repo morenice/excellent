@@ -1,5 +1,5 @@
-from excellent.config_define import *
-from excellent.action import EmailAction
+from exceltp.config_define import *
+from exceltp.action import EmailAction
 
 
 class ActionManager:

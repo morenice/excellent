@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import excellent.condition
-from excellent.config_define import *
+import exceltp.condition
+from exceltp.config_define import *
 import openpyxl
 
 
@@ -28,7 +28,7 @@ class Analyzer:
             self.condition_group_list.append(group)
 
     def _create_group(self, group_name, group_conf):
-        return excellent.condition.ConditionGroup(group_name, group_conf)
+        return exceltp.condition.ConditionGroup(group_name, group_conf)
 
     def set_excel_file(self, xls_filename):
         workbook = None

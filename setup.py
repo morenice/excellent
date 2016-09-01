@@ -1,23 +1,23 @@
 from setuptools import setup
 from setuptools import find_packages
 import os
-import excellent
+import exceltp
 
 
-SCRIPTS = ['bin/excellent']
+SCRIPTS = ['bin/exceltp']
 
 # On Windows we also need additional batch files to run the above scripts
 if os.name == "nt":
-    SCRIPTS += ['bin/excellent.bat']
+    SCRIPTS += ['bin/exceltp.bat']
 
-setup(name=excellent.__module_name__,
-      version=excellent.__version__,
-      description=excellent.__doc__.strip(),
+setup(name=exceltp.__module_name__,
+      version=exceltp.__version__,
+      description=exceltp.__doc__.strip(),
       author='morenice',
       author_email='hyoungguyo@hotmail.com',
       url='https://github.com/morenice/excellent.git',
       scripts=SCRIPTS,
-      license=excellent.__license__,
+      license=exceltp.__license__,
       packages=find_packages(),
       classifiers=[
                    'Programming Language :: Python',

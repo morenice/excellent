@@ -1,6 +1,6 @@
 import unittest
-from excellent.action_manager import *
-from excellent.config import *
+from exceltp.action_manager import *
+from exceltp.config import *
 
 
 class ActionManagerTestCase(unittest.TestCase):

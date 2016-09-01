@@ -3,14 +3,14 @@ from unittest.mock import MagicMock
 import yaml
 from openpyxl import Workbook
 import datetime
-import excellent.action
-from excellent.config import *
+import exceltp.action
+from exceltp.config import *
 
 
 class ActionEmailTestCase(unittest.TestCase):
     def create_action_email(self, config_string):
         email_config = yaml.load(config_string)
-        return excellent.action.EmailAction(email_config)
+        return exceltp.action.EmailAction(email_config)
 
     def test_do_email_action(self):
         config_string = """
@@ -26,7 +26,7 @@ class ActionEmailTestCase(unittest.TestCase):
             $import_data
             thank you
 """
-        email_act = excellent.action.EmailAction(yaml.load(config_string))
+        email_act = exceltp.action.EmailAction(yaml.load(config_string))
         self.assertNotEqual(email_act, None)
 
         wb = Workbook()

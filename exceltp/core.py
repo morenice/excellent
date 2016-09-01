@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
 import getopt
-import excellent
-import excellent.config
-import excellent.analyzer
-import excellent.action_manager
+import exceltp
+import exceltp.config
+import exceltp.analyzer
+import exceltp.action_manager
 
 
 class Excellent(object):
@@ -75,7 +75,7 @@ Example:
               )
 
     def show_version(self):
-        print(excellent.__version__)
+        print(exceltp.__version__)
 
 
 def main():
@@ -93,13 +93,13 @@ def main():
     print(" - '%s' excel file " % (xls_file))
 
     print(" - read config file ...")
-    config = excellent.config.Config(conf_file)
+    config = exceltp.config.Config(conf_file)
     if config.read() != 0:
         return 255
 
     print(" - prepare analyze and action ...")
-    analyzer = excellent.analyzer.Analyzer(config.get_analyzer_conf())
-    action_manager = excellent.action_manager.ActionManager(config.get_action_conf())
+    analyzer = exceltp.analyzer.Analyzer(config.get_analyzer_conf())
+    action_manager = exceltp.action_manager.ActionManager(config.get_action_conf())
 
     print(" - validation excel file ... ")
     ex = Excellent(analyzer, action_manager)

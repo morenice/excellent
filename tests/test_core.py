@@ -1,5 +1,5 @@
 import unittest
-from excellent.core import *
+from exceltp.core import *
 
 
 class TestExcellent(unittest.TestCase):

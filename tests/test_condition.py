@@ -1,7 +1,7 @@
 import unittest
 import datetime
 import yaml
-from excellent.condition import *
+from exceltp.condition import *
 from openpyxl import Workbook
 
 

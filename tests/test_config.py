@@ -1,5 +1,5 @@
 import unittest
-from excellent.config import *
+from exceltp.config import *
 
 
 class TestConfig(unittest.TestCase):

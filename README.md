@@ -15,20 +15,20 @@ excel third-party python program
 download and pip
 * git clone https://github.com/[USER]/excellent.git
 * pip3 install -r excellent/requirements.txt
-* pip3 install -e git+https://github.com/[USER]/excellent.git#egg=excellent
+* pip3 install -e git+https://github.com/[USER]/excellent.git#egg=exceltp
 
 
 ## Usage
 ```
-Usage: excellent -c [file] -f [file]
+Usage: exceltp -c [file] -f [file]
 
  -c     yaml style configure file.
  -f     xls or xlsx file.
  -V     show version.
 
 Example:
- excellent -c configure.yml -f target.xlsx
- excellent -V
+ exceltp -c configure.yml -f target.xlsx
+ exceltp -V
 ```
 
 ### Configuration
