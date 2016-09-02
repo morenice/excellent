@@ -1,67 +1,43 @@
 # excellent ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 
-excel third-party python program
+excellent is excel third-party program
 * Read excel file and configuration file.
 * To classify the matched data in setting conditions.
-* Extern integration - notify email
+* Extern integration : notify email, slack, ...
 
 ## Install
 ### Requirements:
-* `python` >= 3.5 and `git`
+* `python` >= 3.5
 * `openpyxl` : for excel data read(not support xls format)
 * `pyYAML` : for configuration
 
 
-download and pip
-* git clone https://github.com/[USER]/excellent.git
-* pip3 install -r excellent/requirements.txt
-* pip3 install -e git+https://github.com/[USER]/excellent.git#egg=exceltp
+### pypi
+`pip3 install exceltp`
 
 
-## Usage
+## usage
 ```
 Usage: exceltp -c [file] -f [file]
 
  -c     yaml style configure file.
- -f     xls or xlsx file.
+ -f     xlsx file.
  -V     show version.
 
 Example:
- exceltp -c configure.yml -f target.xlsx
+ exceltp -c config.yml -f data.xlsx
  exceltp -V
 ```
+Warning: not suppport xls format
 
-### Configuration
-sample
-```
-config_version: 0.1
-analyzer:
-    - group_a:
-        - test1:
-            column_name: f
-            column_type: date
-            row_startline: 9
-            condition: days_ago
-            value: 3
-    - group_b:
-        - test2:
-            column_name: f
-            column_type: date
-            row_startline: 9
-            condition: days_later
-            value: 5
-action:
-    type: email
-    email_config:
-        subject: please read!!
-        from: t_account@hotmail.com
-        to: to@test.com
-        smtp: smtp.live.com:587
-        smtp_account: t_account@hotmail.com
-        smtp_password : ThisIsPassword
-        msg: |
-            hello
-            expired time ...
-            $import_data
-            thank you
-```
+
+## for Windows OS
+Python 3.5 이상버전의 설치가 필요합니다. https://www.python.org/ 사이트에서 설치 파일을 다운로드 받고 설치를 합니다.
+
+윈도우 터미널을 실행하고 `pip install exceltp` 또는 `pip3 install exceltp`을 명령 내려 exceltp를 설치합니다.
+
+설정 파일을 생성하거나 수정시`노트패드` 또는 `워드패드`를 사용하면 한글 입력에 대한 문제가 발생할 수 있습니다.
+
+자유로운 한글 입력을 위해서는  [NotePad++](https://notepad-plus-plus.org/) 툴을 설치하여 사용하길 권장합니다.
+
+스크립트를 반복적으로 실행하고 싶다면 윈도우에서 지원하는 "예약 작업" 또는 "작업 스케쥴러"를 활용합니다.
