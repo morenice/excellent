@@ -8,9 +8,32 @@ from exceltp.config import *
 
 
 class ActionEmailTestCase(unittest.TestCase):
+
     def create_action_email(self, config_string):
         email_config = yaml.load(config_string)
         return exceltp.action.EmailAction(email_config)
+
+    def test_do_email_configure(self):
+        config_string = """
+        subject: please read!!
+        from: t_account@hotmail.com
+        to: to@test.com
+        smtp: smtp.live.com:587
+        smtp_account: t_account@hotmail.com
+        smtp_password : ThisIsPassword
+        import_data : [a, b, e]
+        msg: |
+            hello
+            expired time ...
+            $import_data
+            thank you
+"""
+        email_act = exceltp.action.EmailAction(yaml.load(config_string))
+        self.assertNotEqual(email_act.smtp_server, None)
+        self.assertNotEqual(email_act.smtp_account, None)
+        self.assertEqual(email_act.import_data[0], 'A')
+        self.assertEqual(email_act.import_data[1], 'B')
+        self.assertEqual(email_act.import_data[2], 'E')
 
     def test_do_email_action(self):
         config_string = """
@@ -20,6 +43,7 @@ class ActionEmailTestCase(unittest.TestCase):
         smtp: smtp.live.com:587
         smtp_account: t_account@hotmail.com
         smtp_password : ThisIsPassword
+        import_data : [a,b]
         msg: |
             hello
             expired time ...
@@ -27,7 +51,6 @@ class ActionEmailTestCase(unittest.TestCase):
             thank you
 """
         email_act = exceltp.action.EmailAction(yaml.load(config_string))
-        self.assertNotEqual(email_act, None)
 
         wb = Workbook()
         ws1 = wb.active
@@ -43,4 +66,31 @@ class ActionEmailTestCase(unittest.TestCase):
         ws1['C4'] = 'New York'
 
         email_act.do = MagicMock(return_value=True)
-        email_act.do([row for row in ws1.rows])
+        self.assertEqual(email_act.do([row for row in ws1.rows]), True)
+
+    def test_make_import_data(self):
+        config_string = """
+        subject: please read!!
+        from: t_account@hotmail.com
+        to: to@test.com
+        smtp: smtp.live.com:587
+        smtp_account: t_account@hotmail.com
+        smtp_password : ThisIsPassword
+        import_data : [a,b]
+        msg: |
+            hello
+            expired time ...
+            $import_data
+            thank you
+"""
+        email_act = exceltp.action.EmailAction(yaml.load(config_string))
+
+        wb = Workbook()
+        ws1 = wb.active
+        ws1.title = "worksheet1"
+        ws1['A2'] = datetime.datetime(2085, 3, 23)
+        ws1['B2'] = 'Tony'
+        ws1['C2'] = 'Seoul'
+
+        msg = email_act._make_replace_msg(ws1)
+        self.assertEqual(msg, '\n2085-03-23 00:00:00 Tony \n')

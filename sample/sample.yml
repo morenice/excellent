@@ -12,7 +12,7 @@ analyzer:
             column_name: f
             column_type: date
             row_startline: 9
-            condition: days_later
+            condition: days_ago
             value: 5
 action:
     type: email
@@ -23,6 +23,7 @@ action:
         smtp: smtp.live.com:587
         smtp_account: t_account@hotmail.com
         smtp_password : ThisIsPassword
+        import_data: [d, e, f]
         msg: |
             hello
             expired time ...
