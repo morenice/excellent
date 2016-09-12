@@ -47,21 +47,26 @@ class Analyzer:
     def set_excel_workbook(self, workbook):
         self.excel_workbook = workbook
 
-    def analyze(self):
+    def analyze(self, verbose=True):
         if self.excel_workbook is None:
             return False
 
-        # only support active worksheet.
-        # TODO : select worksheet
-        worksheet = self.excel_workbook.active
+        # TODO : select worksheet. current work that all worksheet
+        ws_sheet_total = len(self.excel_workbook.get_sheet_names())
+        for ws_index, ws_name in enumerate(self.excel_workbook.get_sheet_names()):
+            worksheet = self.excel_workbook.get_sheet_by_name(ws_name)
 
-        # send excel row to condition group
-        for row in worksheet.rows:
-            for group in self.condition_group_list:
-                # 'OR' logic per group
-                if group.match(row):
-                    self.analyze_data.append(row)
-                    break
+            if verbose:
+                print("  process %d/%d sheet name '%s'" %
+                            (ws_index+1, ws_sheet_total, worksheet.title))
+
+            # send excel row to condition group
+            for row in worksheet.rows:
+                for group in self.condition_group_list:
+                    # 'OR' logic per group
+                    if group.match(row):
+                        self.analyze_data.append(row)
+                        break
 
         return True
 

@@ -20,16 +20,15 @@ class Excellent(object):
         return False
 
     def process(self):
-        print(" - process analyze ...")
+        print("* process analyze ...")
         if self.analyzer.analyze():
             if self.analyzer.count_analyze_data() == 0:
-                print("Complete")
-                print("no action data. please confirm analyzed data...")
+                print("* complete: no action data.")
                 return
 
-            print(" - do action ...")
+            print("* do action ...")
             self.action_manager.do_action(self.analyzer.get_analyze_data())
-            print("Complete")
+            print("* complete")
 
 
 class ExcellentOpts:
@@ -89,19 +88,22 @@ def main():
     if conf_file is None and xls_file is None:
         return 0
 
-    print(" - '%s' config file" % (conf_file))
-    print(" - '%s' excel file " % (xls_file))
+    print("* '%s' config file" % (conf_file))
+    print("* '%s' excel file " % (xls_file))
 
-    print(" - read config file ...")
+    print("* read config file ...")
     config = exceltp.config.Config(conf_file)
-    if config.read() != 0:
+    ret = config.read()
+    if ret != 0:
+        print("\nfail %d" % ret)
         return 255
 
-    print(" - prepare analyze and action ...")
+    print("* prepare analyze and action ...")
     analyzer = exceltp.analyzer.Analyzer(config.get_analyzer_conf())
-    action_manager = exceltp.action_manager.ActionManager(config.get_action_conf())
+    action_manager = \
+        exceltp.action_manager.ActionManager(config.get_action_conf())
 
-    print(" - validation excel file ... ")
+    print("* validation excel file ... ")
     ex = Excellent(analyzer, action_manager)
     if ex.set_excel_file(xls_file) == False:
         return 255
