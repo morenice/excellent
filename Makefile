@@ -25,6 +25,10 @@ uninstall :
 	$(PYTHON) setup.py install --record uninstall.txt
 	cat uninstall.txt | xargs rm -rf
 
+pypi :
+	$(PYTHON) setup.py register -r pypi
+	$(PYTHON) setup.py sdist upload -r pypi
+
 clean :
 	@(cd $(MODULE_NAME); rm -f *.pyc)
 	@(cd tests; rm -f *.pyc)
