@@ -74,14 +74,14 @@ analyzer:
             column_type: date
             row_startline: 9
             condition: today_equal
-            value: 3
+            value: -3
     - group_b:
         - test2:
             column_name: f
             column_type: date
             row_startline: 9
             condition: today_equal
-            value: 5
+            value: -5
 action:
     type: email
     email_config:
@@ -138,7 +138,7 @@ reply: retcode (250); Msg: b'2.1.0 test@hotmail.com....Sender OK'
 
 ![Alt text](/images/windows_jobsche_run.png?raw=true "Windows Job Scheduling Running")
 
-window batch 파일을 필요에 맞게 작성하고 해당 batch 파일을 호출하는 작업을 만들어서 사용하는 것을 권장한다.
+배치파일을 필요에 맞게 작성하고 해당 파일을 호출하는 작업을 만들어서 사용하는 것을 권장한다.
 
 ![Alt text](/images/windows_jobsche_newtask.png?raw=true "Windows Job Scheduling New Task")
 
