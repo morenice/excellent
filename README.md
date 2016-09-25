@@ -38,9 +38,9 @@ See sample/sample.yaml file
 * groups processed as 'or' logic operation
 * support date column type
 * date type condition
-** today_equal
-** toay_range_in
-** toay_range_over
+ * today_equal
+ * toay_range_in
+ * toay_range_over
 
 ### action
 ...
@@ -137,6 +137,8 @@ reply: retcode (250); Msg: b'2.1.0 test@hotmail.com....Sender OK'
 스크립트를 반복적으로 실행하고 싶다면 윈도우에서 지원하는 "작업 스케쥴러"를 활용한다.
 
 ![Alt text](/images/windows_jobsche_run.png?raw=true "Windows Job Scheduling Running")
+
+window batch 파일을 필요에 맞게 작성하고 해당 batch 파일을 호출하는 작업을 만들어서 사용하는 것을 권장한다.
 
 ![Alt text](/images/windows_jobsche_newtask.png?raw=true "Windows Job Scheduling New Task")
 
