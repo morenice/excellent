@@ -155,18 +155,130 @@ class DateConditionTestCase(unittest.TestCase):
         self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
         self.assertEqual(cond.match(ws1['A5']), MatchResult.no_match)
 
-    def test_today_range_inner_1(self):
-        """condition: today_range_inner
+    def test_today_range_in_1(self):
+        """condition: today_range_in
         ex) value : 3, cell <= today + 3
-        ex) value : 0, cell == today
+        """
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_in
+            value: 3
+"""
+        date = datetime.datetime(2016, 5, 10)
+        cond = create_condition(config_string, 'test', date)
+
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.no_match)
+
+    def test_today_range_in_2(self):
+        """ condition: today_range_in
         ex) value : -3, cell >= today -3
         """
-        pass
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_in
+            value: -3
+"""
+        date = datetime.datetime(2018, 8, 22)
+        cond = create_condition(config_string, 'test', date)
+
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.match)
+
+    def test_today_range_in_3(self):
+        """ condition: today_range_in
+        ex) value : 0, cell == today
+        """
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_in
+            value: 0
+"""
+        date = datetime.datetime(2016, 5, 8)
+        cond = create_condition(config_string, 'test', date)
+
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.no_match)
 
     def test_today_range_over_1(self):
         """condition: today_range_over
-        ex) value : 3, today + 3 <= cell
-        ex) value : 0, cell == today
-        ex) value : -3, today -3 >= cell
+        ex) value : 3, cell > today + 3
         """
-        pass
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_over
+            value: 3
+"""
+        date = datetime.datetime(2019, 5, 10)
+        cond = create_condition(config_string, 'test', date)
+
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.match)
+
+    def test_today_range_over_2(self):
+        """ condition: today_range_over
+        ex) value : -3, cell < today -3
+        """
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_over
+            value: -3
+"""
+        date = datetime.datetime(2017, 6, 10)
+        cond = create_condition(config_string, 'test', date)
+
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.match)
+
+    def test_today_range_over_3(self):
+        """ condition: today_range_over
+        ex) value : 0, cell == today
+        """
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_over
+            value: 0
+"""
+        date = datetime.datetime(2016, 5, 8)
+        cond = create_condition(config_string, 'test', date)
+
+        # today_range_over
+        # when value is 0, always no match
+        ws1 = self.wb.active
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A3']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.no_match)
