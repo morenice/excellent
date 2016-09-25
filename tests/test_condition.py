@@ -13,8 +13,23 @@ def create_condition(config_string, cond_name, criteria_date):
 
 
 class ConditionGroupTestCase(unittest.TestCase):
+    def setUp(self):
+        self.wb = Workbook()
+        ws1 = self.wb.active
+        ws1.title = "worksheet1"
+        ws1['A1'] = 'Due date'
+        ws1['A2'] = datetime.datetime(2010, 7, 21)
+        ws1['A3'] = datetime.datetime(2016, 5, 15)
+        ws1['A4'] = datetime.datetime(2017, 6, 21)
+        ws1['B1'] = 'Name'
+        ws1['B2'] = 'Tony'
+        ws1['B3'] = 'Mike'
+        ws1['B4'] = 'Lee'
 
-    def test_group_function(self):
+    def tearDown(self):
+        del(self.wb)
+
+    def test_group_single_condition(self):
         group = ConditionGroup("group1", None)
 
         config_string = """
@@ -30,24 +45,43 @@ class ConditionGroupTestCase(unittest.TestCase):
 
         group.add_condition(cond)
 
-        wb = Workbook()
-        ws1 = wb.active
-        ws1.title = "worksheet1"
-        ws1['A1'] = 'Due date'
-        ws1['A2'] = datetime.datetime(2010, 7, 21)
-        ws1['A3'] = datetime.datetime(2016, 5, 15)
-        ws1['A4'] = datetime.datetime(2017, 6, 21)
-        ws1['B1'] = 'Name'
-        ws1['B2'] = 'Tony'
-        ws1['B3'] = 'Mike'
-        ws1['B4'] = 'Lee'
-
+        ws1 = self.wb.active
         self.assertEqual(group.match(ws1.rows[2]), True)
         self.assertEqual(group.match(ws1.rows[3]), False)
 
     def test_group_function_and_operation(self):
-        # TODO: 'AND' logic testing with multiple condition
-        # 1 group and 2 condition
+        group = ConditionGroup("group1", None)
+        date = datetime.datetime(2016, 5, 14)
+
+        config_string = """
+        test:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_in
+            value: -2
+"""
+        cond = create_condition(config_string, 'test', date)
+
+        config_string2 = """
+        test2:
+            column_name: a
+            column_type: date
+            row_startline: 2
+            condition: today_range_in
+            value: 2
+"""
+        cond2 = create_condition(config_string2, 'test2', date)
+
+        group.add_condition(cond)
+        group.add_condition(cond2)
+
+        ws1 = self.wb.active
+        self.assertEqual(group.match(ws1.rows[2]), False)
+        self.assertEqual(group.match(ws1.rows[3]), False)
+
+    def test_group_function_or_operation(self):
+        """TODO"""
         pass
 
 

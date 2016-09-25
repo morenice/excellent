@@ -135,14 +135,6 @@ class DateCondition(Condtion):
             return MatchResult.no_match
 
     def _today_range_over(self, data):
-#        print('---------------------')
-#        print(data.value)
-#        print(self.criteria_date)
-#        delta = data.value - self.criteria_date
-#        print(delta)
-#        print('int value %s' % int(self.value))
-#        print('---------------------')
-
         range_data = data.value + datetime.timedelta(int(self.value))
         if int(self.value) >= 0:
             if self.criteria_date > range_data:
