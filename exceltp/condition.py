@@ -118,11 +118,15 @@ class DateCondition(Condtion):
         if not data.is_date:
             return MatchResult.invalid_value
 
-        if self.condition == "days_ago":
-            days_ago = data.value - datetime.timedelta(int(self.value))
-            if days_ago.year == self.criteria_date.year and \
-                    days_ago.month == self.criteria_date.month and \
-                    days_ago.day == self.criteria_date.day:
+        if self.condition == "today_equal":
+            if int(self.value) >= 0:
+                today_equal = data.value + datetime.timedelta(int(self.value))
+            else:
+                today_equal = data.value - datetime.timedelta(abs(int(self.value)))
+
+            if today_equal.year == self.criteria_date.year and \
+                    today_equal.month == self.criteria_date.month and \
+                    today_equal.day == self.criteria_date.day:
                 return MatchResult.match
             else:
                 return MatchResult.no_match

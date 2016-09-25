@@ -23,15 +23,15 @@ analyzer:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: days_ago
-            value: 5
+            condition: today_equal
+            value: -5
     - group_b:
         - test:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: days_ago
-            value: 3
+            condition: today_equal
+            value: -3
 """
         config = Config(None)
         config.read_raw_data(config_string)
@@ -46,8 +46,8 @@ analyzer:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: days_ago
-            value: 3
+            condition: today_equal
+            value: -3
 """
         date = datetime.datetime(2016, 5, 14)
         cond = create_condition(config_string, 'test', date)
@@ -58,8 +58,8 @@ analyzer:
             column_name: a
             column_type: date
             row_startline: 2
-            condition: days_ago
-            value: 5
+            condition: today_equal
+            value: -5
 """
         date2 = datetime.datetime(2016, 5, 14)
         cond2 = create_condition(config_string2, 'test2', date2)
