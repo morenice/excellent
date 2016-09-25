@@ -5,14 +5,14 @@ analyzer:
             column_name: f
             column_type: date
             row_startline: 9
-            condition: days_ago
+            condition: today_equal
             value: 3
     - group_b:
         - test2:
             column_name: f
             column_type: date
             row_startline: 9
-            condition: days_ago
+            condition: today_equal
             value: 5
 action:
     type: email
