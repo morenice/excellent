@@ -43,6 +43,7 @@ class EmailAction(Action):
 
         self.email_from = email_conf[EMAIL_FROM]
         self.email_to = email_conf[EMAIL_TO]
+        self.email_cc = email_conf[EMAIL_CC]
         self.subject = email_conf[EMAIL_SUBJECT]
         self.msg = email_conf[EMAIL_MSG]
         try:
@@ -87,8 +88,13 @@ class EmailAction(Action):
         send_msg = EmailMessage()
         send_msg['From'] = self.email_from
 
-        # TODO: multiple 'email_to' => support list
+        # multiple mail_to
+        #  ex) a@mail.com,b@mail.com
         send_msg['To'] = self.email_to
+
+        if len(self.email_cc) > 0:
+            send_msg['CC'] = self.email_cc
+
         send_msg['Subject'] = self.subject
         send_msg.set_content(msg_content)
 

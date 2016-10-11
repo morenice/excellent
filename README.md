@@ -46,20 +46,18 @@ See sample/sample.yaml file
 ...
 
 
-## for Windows OS
-### 설치
+## Quick start for Windows OS
+### Python install
 Python 3.5 이상버전의 설치가 필요하다. https://www.python.org/ 사이트에서 설치 파일을 다운로드 받고 설치한다.
 
 윈도우 터미널을 실행하고 `pip install exceltp` 또는 `pip3 install exceltp`을 명령 내려 exceltp를 설치한다.
 
 
-### 설정 파일
+### Confiuration
 설정 파일을 생성하거나 수정시`노트패드` 또는 `워드패드`를 사용하면 한글 입력에 대한 문제가 발생할 수 있다.
 
 UTF-8 인코딩으로 파일을 저장하거나 [NotePad++](https://notepad-plus-plus.org/) 툴을 설치해서 사용한다.
 
-
-### 실행
 
 ![Alt text](/images/sample_xlsx.png?raw=true "Sample Xlsx Title")
 
@@ -87,14 +85,15 @@ action:
     email_config:
         subject: Book 구매 확인 메일입니다.
         from: t_account@hotmail.com
-        to: to@test.com
+        to: to@test.com,to2@test.com
+        cc: to3@test.com
         smtp: smtp.live.com:587
         smtp_account: t_account@hotmail.com
         smtp_password : ThisIsPassword
         import_data: [d, e, f]
         msg: |
-            안녕하세요. 자동알림입니다.
-            확인메일을 보내드립니다. 아래 내용을 참고하세요.
+            안녕하세요. 알림메일입니다.
+            아래 내용을 참고하세요.
             $import_data
             감사합니다.
 ```
@@ -111,6 +110,8 @@ action configure
 * msg 내용에 $import_data 키워드를 포함시키면 메일 전송시 condition에 일치되는 match data로 변경하여 전송한다.
 * import_data는 match data 중에서 필요한 열만 포함시킬 경우 작성한다.
 
+
+### Execute
 
 ```
 exceltp -c sample/sample.yml -f sample/sample.xlsx
@@ -133,7 +134,7 @@ reply: retcode (250); Msg: b'2.1.0 test@hotmail.com....Sender OK'
 ```
 
 
-### 예약 작업
+### Job scheduler
 스크립트를 반복적으로 실행하고 싶다면 윈도우에서 지원하는 "작업 스케쥴러"를 활용한다.
 
 ![Alt text](/images/windows_jobsche_run.png?raw=true "Windows Job Scheduling Running")
