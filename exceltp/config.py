@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import yaml
-from exceltp.config_define import *
+from exceltp.define import *
 
 
 class Config:

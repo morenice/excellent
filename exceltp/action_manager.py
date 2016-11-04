@@ -1,4 +1,4 @@
-from exceltp.config_define import *
+from exceltp.define import *
 from exceltp.action import EmailAction
 
 

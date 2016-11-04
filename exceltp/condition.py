@@ -2,7 +2,7 @@
 import datetime
 from abc import abstractmethod
 from enum import Enum
-from exceltp.config_define import *
+from exceltp.define import *
 
 
 class ColumnType(Enum):

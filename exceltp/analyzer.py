@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import exceltp.condition
-from exceltp.config_define import *
+from exceltp.define import *
 import openpyxl
 
 

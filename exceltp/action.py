@@ -3,7 +3,7 @@
 from abc import ABCMeta, abstractmethod
 from email.message import EmailMessage
 import smtplib
-from exceltp.config_define import *
+from exceltp.define import *
 
 
 class Action:
@@ -43,7 +43,10 @@ class EmailAction(Action):
 
         self.email_from = email_conf[EMAIL_FROM]
         self.email_to = email_conf[EMAIL_TO]
-        self.email_cc = email_conf[EMAIL_CC]
+        if EMAIL_CC in email_conf:
+            self.email_cc = email_conf[EMAIL_CC]
+        else:
+            self.email_cc = ""
         self.subject = email_conf[EMAIL_SUBJECT]
         self.msg = email_conf[EMAIL_MSG]
         try:
