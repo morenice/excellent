@@ -109,40 +109,39 @@ class DateCondition(Condtion):
         self.criteria_date = date
 
     def _today_equal(self, data):
-        if int(self.value) >= 0:
-            today_equal = data.value + datetime.timedelta(int(self.value))
-        else:
-            today_equal = data.value - datetime.timedelta(abs(int(self.value)))
+        compare_date = self.criteria_date + datetime.timedelta(int(self.value))
 
-        if today_equal.year == self.criteria_date.year and \
-                today_equal.month == self.criteria_date.month and \
-                today_equal.day == self.criteria_date.day:
+        if data.value.year == compare_date.year and \
+                data.value.month == compare_date.month and \
+                data.value.day == compare_date.day:
             return MatchResult.match
         else:
             return MatchResult.no_match
 
     def _today_range_in(self, data):
-        range_data = data.value + datetime.timedelta(int(self.value))
+        range_data = self.criteria_date + datetime.timedelta(int(self.value))
+
         if int(self.value) >= 0:
-            if self.criteria_date <= range_data and self.criteria_date >= data.value:
+            if self.criteria_date <= data.value and data.value <= range_data:
                 return MatchResult.match
 
             return MatchResult.no_match
         else:
-            if self.criteria_date >= range_data and self.criteria_date <= data.value:
+            if self.criteria_date >= data.value and data.value >= range_data:
                 return MatchResult.match
 
             return MatchResult.no_match
 
     def _today_range_over(self, data):
-        range_data = data.value + datetime.timedelta(int(self.value))
+        range_data = self.criteria_date + datetime.timedelta(int(self.value))
+
         if int(self.value) >= 0:
-            if self.criteria_date > range_data:
+            if data.value > range_data:
                 return MatchResult.match
 
             return MatchResult.no_match
         else:
-            if self.criteria_date < range_data:
+            if data.value < range_data:
                 return MatchResult.match
 
             return MatchResult.no_match
@@ -158,11 +157,11 @@ class DateCondition(Condtion):
         if not data.is_date:
             return MatchResult.invalid_value
 
-        if self.condition == "today_equal":
+        if self.condition == CONDITION_TODAY_EQUAL:
             return self._today_equal(data)
-        elif self.condition == "today_range_in":
+        elif self.condition == CONDITION_TODAY_RANGE_IN:
             return self._today_range_in(data)
-        elif self.condition == "today_range_over":
+        elif self.condition == CONDITION_TODAY_RANGE_OVER:
             return self._today_range_over(data)
 
         return MatchResult.no_match

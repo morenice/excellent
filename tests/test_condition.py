@@ -38,7 +38,7 @@ class ConditionGroupTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_equal
-            value: -1
+            value: 1
 """
         date = datetime.datetime(2016, 5, 14)
         cond = create_condition(config_string, 'test', date)
@@ -128,7 +128,7 @@ class DateConditionTestCase(unittest.TestCase):
 
     def test_today_equal_1(self):
         """ condition: today_equal
-        ex) value : 3, cell == today + 3
+        ex) value : -3, cell == today - 3
         """
         config_string = """
         test:
@@ -136,8 +136,9 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_equal
-            value: 3
+            value: -3
 """
+        # define today
         date = datetime.datetime(2016, 5, 11)
         cond = create_condition(config_string, 'test', date)
 
@@ -149,7 +150,7 @@ class DateConditionTestCase(unittest.TestCase):
 
     def test_today_equal_2(self):
         """ condition: today_equal
-        ex) value : -3, cell == today -3
+        ex) value : 3, cell == today + 3
         """
         config_string = """
         test:
@@ -157,7 +158,7 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_equal
-            value: -3
+            value: 3
 """
         date = datetime.datetime(2018, 8, 20)
         cond = create_condition(config_string, 'test', date)
@@ -191,7 +192,7 @@ class DateConditionTestCase(unittest.TestCase):
 
     def test_today_range_in_1(self):
         """condition: today_range_in
-        ex) value : 3, cell <= today + 3
+        ex) value : -3, cell <= today - 3
         """
         config_string = """
         test:
@@ -199,7 +200,7 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_range_in
-            value: 3
+            value: -3
 """
         date = datetime.datetime(2016, 5, 10)
         cond = create_condition(config_string, 'test', date)
@@ -220,7 +221,7 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_range_in
-            value: -3
+            value: 3
 """
         date = datetime.datetime(2018, 8, 22)
         cond = create_condition(config_string, 'test', date)
@@ -254,7 +255,7 @@ class DateConditionTestCase(unittest.TestCase):
 
     def test_today_range_over_1(self):
         """condition: today_range_over
-        ex) value : 3, cell > today + 3
+        ex) value : -3, cell < today - 3
         """
         config_string = """
         test:
@@ -262,7 +263,7 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_range_over
-            value: 3
+            value: -3
 """
         date = datetime.datetime(2019, 5, 10)
         cond = create_condition(config_string, 'test', date)
@@ -275,7 +276,7 @@ class DateConditionTestCase(unittest.TestCase):
 
     def test_today_range_over_2(self):
         """ condition: today_range_over
-        ex) value : -3, cell < today -3
+        ex) value : 3, cell > today + 3
         """
         config_string = """
         test:
@@ -283,7 +284,7 @@ class DateConditionTestCase(unittest.TestCase):
             column_type: date
             row_startline: 2
             condition: today_range_over
-            value: -3
+            value: 3
 """
         date = datetime.datetime(2017, 6, 10)
         cond = create_condition(config_string, 'test', date)
@@ -306,13 +307,13 @@ class DateConditionTestCase(unittest.TestCase):
             condition: today_range_over
             value: 0
 """
-        date = datetime.datetime(2016, 5, 8)
+        date = datetime.datetime(2016, 11, 5)
         cond = create_condition(config_string, 'test', date)
 
         # today_range_over
         # when value is 0, always no match
         ws1 = self.wb.active
-        self.assertEqual(cond.match(ws1['A2']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A2']), MatchResult.match)
         self.assertEqual(cond.match(ws1['A3']), MatchResult.no_match)
-        self.assertEqual(cond.match(ws1['A4']), MatchResult.no_match)
-        self.assertEqual(cond.match(ws1['A5']), MatchResult.no_match)
+        self.assertEqual(cond.match(ws1['A4']), MatchResult.match)
+        self.assertEqual(cond.match(ws1['A5']), MatchResult.match)

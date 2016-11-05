@@ -14,6 +14,10 @@ ROW_STARTLINE = 'row_startline'
 CONDITION = 'condition'
 CONDITION_VALUE = 'value'
 
+CONDITION_TODAY_EQUAL = 'today_equal'
+CONDITION_TODAY_RANGE_IN = 'today_range_in'
+CONDITION_TODAY_RANGE_OVER = 'today_range_over'
+
 # action configuration string
 ACTION = 'action'
 ACTION_TYPE = 'type'
