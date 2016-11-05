@@ -19,94 +19,114 @@ class Excellent(object):
             return True
         return False
 
-    def process(self):
-        print("* process analyze ...")
+    def analyze(self):
         if self.analyzer.analyze():
-            if self.analyzer.count_analyze_data() == 0:
-                print("* complete: no action data.")
-                return
+            return self.analyzer.count_analyze_data()
+        return -1
 
-            print("* do action ...")
-            self.action_manager.do_action(self.analyzer.get_analyze_data())
-            print("* complete")
+    def process(self):
+        return self.action_manager.do_action(self.analyzer.get_analyze_data())
 
 
 class ExcellentOpts:
+    def __init__(self):
+        self.conf_file = ""
+        self.xls_file = ""
+        self.show_template = False
+        self.show_version = False
+
     def parse_args(self, args):
         try:
             opts, args = getopt.getopt(args, "c:f:V")
         except:
-            # show usage and return!!
-            self.usage()
-            return (None, None)
+            return False
 
-        conf_file = xls_file = ""
         for opt, arg in opts:
             if opt == "-V":
-                # show version and return!!
-                self.show_version()
-                return (None, None)
+                self.show_version = True
+                return True
             elif opt == "-c":
-                conf_file = arg
+                self.conf_file = arg
             elif opt == "-f":
-                xls_file = arg
+                self.xls_file = arg
 
-        # need conf filename and excel filename
-        if len(conf_file) == 0 or len(xls_file) == 0:
-            # show usage and return!!
-            self.usage()
-            return (None, None)
+        return True
 
-        return (conf_file, xls_file)
 
-    def usage(self):
-        print("""
-Usage: %s -c [file] -f [file]
+def usage():
+    print("""excellent is microsoft excel third party program.
+compare and analyze the data in the excel file. notifies the user.
 
- -c\tyaml style configure file.
- -f\txls or xlsx file.
- -V\tshow version.
+Available commands:
+
+ -c yaml style configure file.
+ -f xls or xlsx file.
+ -V show version.
+
+Usage:
+\t%s -c [file] -f [file]
+\t%s -V
 
 Example:
- %s -c configure.yml -f target.xlsx
- %s -V
-""" % (sys.argv[0], sys.argv[0], sys.argv[0])
-              )
+ %s -c config.yml -f sample.xlsx
+""" % (sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0])
+          )
 
-    def show_version(self):
-        print(exceltp.__version__)
+
+def show_version():
+    print(exceltp.__version__)
 
 
 def main():
     ex_opts = ExcellentOpts()
     if len(sys.argv) <= 1:
-        return ex_opts.usage()
-
-    conf_file, xls_file = ex_opts.parse_args(sys.argv[1:])
-
-    # show usage or version info. program exit.
-    if conf_file is None and xls_file is None:
+        usage()
         return 0
 
-    print("* '%s' config file" % (conf_file))
-    print("* '%s' excel file " % (xls_file))
-
-    print("* read config file ...")
-    config = exceltp.config.Config(conf_file)
-    ret = config.read()
-    if ret != 0:
-        print("\nfail %d" % ret)
+    if ex_opts.parse_args(sys.argv[1:]) is False:
+        usage()
         return 255
 
-    print("* prepare analyze and action ...")
+    if ex_opts.show_version is True:
+        show_version()
+        return 0
+
+    # need conf filename and excel filename
+    if len(ex_opts.conf_file) == 0 or len(ex_opts.xls_file) == 0:
+        print("Both settings -c and -f are required.")
+        return 255
+
+    print("* '%s' config file" % (ex_opts.conf_file))
+    print("* '%s' excel file " % (ex_opts.xls_file))
+
+    print("* read config file ...")
+    config = exceltp.config.Config(ex_opts.conf_file)
+    ret = config.read()
+    if ret != 0:
+        print("* complete: fail %d" % ret)
+        return 255
+
+    print("* prepare analyzer and action ...")
     analyzer = exceltp.analyzer.Analyzer(config.get_analyzer_conf())
     action_manager = \
         exceltp.action_manager.ActionManager(config.get_action_conf())
 
     print("* validation excel file ... ")
-    ex = Excellent(analyzer, action_manager)
-    if ex.set_excel_file(xls_file) == False:
+    exceltp_obj = Excellent(analyzer, action_manager)
+    if exceltp_obj.set_excel_file(ex_opts.xls_file) is False:
         return 255
 
-    ex.process()
+    print("* process analyze ...")
+    analyze_count = exceltp_obj.analyze()
+    if analyze_count < 0:
+        print("* complete: failed to analyze.")
+        return 255
+
+    if analyze_count == 0:
+        print("* complete: no action data.")
+        return 0
+
+    print("* do action ...")
+    exceltp_obj.process()
+    print("* complete")
     return 0

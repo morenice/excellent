@@ -1,0 +1,18 @@
+config_version: 0.1
+analyzer:
+    - group_a:
+        - test1:
+            column_name: f
+            column_type: date
+            row_startline: 9
+            condition: today_range_in
+            value: -10
+action:
+    type: slack_webhook
+    slack_webhook_config:
+        url: https://hooks.slack.com/services/T02Q9/B0HLF/Wnv7JNxEWeySFoHvG
+        import_data: [d, e, f]
+        msg: |
+            hello
+            expired time ...
+            $import_data
