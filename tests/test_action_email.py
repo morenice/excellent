@@ -3,15 +3,11 @@ from unittest.mock import MagicMock
 import yaml
 from openpyxl import Workbook
 import datetime
-import exceltp.action
+import exceltp.email_sender
 from exceltp.config import *
 
 
 class ActionEmailTestCase(unittest.TestCase):
-
-    def create_action_email(self, config_string):
-        email_config = yaml.load(config_string)
-        return exceltp.action.EmailAction(email_config)
 
     def test_do_email_configure(self):
         config_string = """
@@ -28,7 +24,7 @@ class ActionEmailTestCase(unittest.TestCase):
             $import_data
             thank you
 """
-        email_act = exceltp.action.EmailAction(yaml.load(config_string))
+        email_act = exceltp.email_sender.EmailAction(yaml.load(config_string))
         self.assertNotEqual(email_act.smtp_server, None)
         self.assertNotEqual(email_act.smtp_account, None)
         self.assertEqual(email_act.import_data[0], 'A')
@@ -50,7 +46,7 @@ class ActionEmailTestCase(unittest.TestCase):
             $import_data
             thank you
 """
-        email_act = exceltp.action.EmailAction(yaml.load(config_string))
+        email_act = exceltp.email_sender.EmailAction(yaml.load(config_string))
 
         wb = Workbook()
         ws1 = wb.active
@@ -83,7 +79,7 @@ class ActionEmailTestCase(unittest.TestCase):
             $import_data
             thank you
 """
-        email_act = exceltp.action.EmailAction(yaml.load(config_string))
+        email_act = exceltp.email_sender.EmailAction(yaml.load(config_string))
 
         wb = Workbook()
         ws1 = wb.active

@@ -1,5 +1,6 @@
 from exceltp.define import *
-from exceltp.action import EmailAction
+from exceltp.email_sender import EmailAction
+from exceltp.slack_webhook import SlackWebHook
 
 
 class ActionManager:
@@ -12,10 +13,13 @@ class ActionManager:
         if action_conf[ACTION_TYPE] == ACTION_EMAIL:
             self.action = EmailAction(action_conf[EMAIL_CONFIG])
 
+        if action_conf[ACTION_TYPE] == ACTION_SLACK_WEBHOOK:
+            self.action = SlackWebHook(action_conf[SLACK_WEBHOOK_CONFIG])
+
     def get_action_type(self):
         return self.action.get_type()
 
-    def add_action(self, action):
+    def set_action(self, action):
         self.action = action
 
     def do_action(self, data):
