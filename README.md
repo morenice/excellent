@@ -1,9 +1,15 @@
 # excellent ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
 
 excellent is excel third-party program
+
+![Alt text](/images/excellent.png?raw=true "Sample Xlsx Title")
+
 * Read excel file and configuration file.
 * To classify the matched data in setting conditions.
 * Extern integration : notify email, slack, ...
+
+
+**Use it when you want to be notified about expiration dates.**
 
 ## Install
 ### Requirements:
@@ -18,22 +24,31 @@ excellent is excel third-party program
 
 ## Usage
 ```
-Usage: exceltp -c [file] -f [file]
+excellent is microsoft excel third party program.
+compare and analyze the data in the excel file. notifies the user.
 
- -c     yaml style configure file.
- -f     xlsx file.
- -V     show version.
+Available commands:
+
+ -c yaml style configure file.
+ -f xls or xlsx file.
+ -V show version.
+
+Usage:
+	exceltp.py -c [file] -f [file]
+	exceltp.py -V
 
 Example:
- exceltp -c config.yml -f data.xlsx
- exceltp -V
+ exceltp.py -c config.yml -f sample.xlsx
 ```
-Warning: not suppport xls format
+
+* Warning: not suppport xls format
 
 
 ## Configure
+
 ### analyzer
 See sample/sample.yaml file
+
 * condition in group processed as 'and' logic operation
 * groups processed as 'or' logic operation
 * support date column type
@@ -42,26 +57,41 @@ See sample/sample.yaml file
  * toay_range_in
  * toay_range_over
 
+
 ### action
-...
+Email Sender
+* See sample/sample.yaml file
+* type is email
+* smpt server and account setting is required
+* $import_data keyword of msg setting contains analyzed data
+* import_data setting can include the excel column
+
+
+Slack webhook
+* See sample/sample_slack.yaml
+* type is slack_webhook
+* webhook url setting is required
+* $import_data keyword of msg setting contains analyzed data
+* import_data setting can include the excel column
 
 
 ## Quick start for Windows OS
-### Python install
-Python 3.5 이상버전의 설치가 필요하다. https://www.python.org/ 사이트에서 설치 파일을 다운로드 받고 설치한다.
+### Install
+Required python 3.5
+* visit https://www.python.org/
+* download and install
 
-윈도우 터미널을 실행하고 `pip install exceltp` 또는 `pip3 install exceltp`을 명령 내려 exceltp를 설치한다.
-
-
-### Confiuration
-설정 파일을 생성하거나 수정시`노트패드` 또는 `워드패드`를 사용하면 한글 입력에 대한 문제가 발생할 수 있다.
-
-UTF-8 인코딩으로 파일을 저장하거나 [NotePad++](https://notepad-plus-plus.org/) 툴을 설치해서 사용한다.
+Install exceltp
+* open windows terminal(cmd)
+* execute command `pip install exceltp` or `pip3 install exceltp`
 
 
+### Sample file
 ![Alt text](/images/sample_xlsx.png?raw=true "Sample Xlsx Title")
 
 
+### Confiuration
+Write configure file
 
 ```
 config_version: 0.1
@@ -98,18 +128,6 @@ action:
             감사합니다.
 ```
 
-condition configure
-* f열의 날짜 데이터를 조건으로 확인하기 위해 column_name의 값을 f로 column_type을 date로 설정한다.
-* 엑셀 시트의 데이터 시작이 9번째 라인부터 시작하기 때문에 row_startline을 9로 설정한다.
-* f열의 날짜데이터 값을 비교하여 오늘이 3일전 또는 5일전일 때 참으로 판단하기 위해 2개의 Group을 등록한다.
-
-
-action configure
-* 메일 전송에 사용할 smtp 서버주소와 계정 정보를 작성한다.
-* subject와 msg에 전송할 메일의 제목과 내용을 작성한다.
-* msg 내용에 $import_data 키워드를 포함시키면 메일 전송시 condition에 일치되는 match data로 변경하여 전송한다.
-* import_data는 match data 중에서 필요한 열만 포함시킬 경우 작성한다.
-
 
 ### Execute
 
@@ -133,13 +151,8 @@ reply: retcode (250); Msg: b'2.1.0 test@hotmail.com....Sender OK'
 .
 ```
 
+Will be recevie email that contains analyzed data
 
-### Job scheduler
-스크립트를 반복적으로 실행하고 싶다면 윈도우에서 지원하는 "작업 스케쥴러"를 활용한다.
-
-![Alt text](/images/windows_jobsche_run.png?raw=true "Windows Job Scheduling Running")
-
-배치파일을 필요에 맞게 작성하고 해당 파일을 호출하는 작업을 만들어서 사용하는 것을 권장한다.
-
-![Alt text](/images/windows_jobsche_newtask.png?raw=true "Windows Job Scheduling New Task")
+### Tips
+If you want to periodically analyze files and receive notifications, use Job Scheduling
 
