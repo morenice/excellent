@@ -54,15 +54,25 @@ See sample/sample.yaml file
 * support date column type
 * date type condition
  * today_equal
- * toay_range_in
- * toay_range_over
+ * today_range_in
+ * today_range_over
 
+
+example: today(2016.05.15), value +2 or -2
+```
+ ===============================================================================
+
+             2016.05.15(-2)        2016.05.15        2016.05.17(+2)
+ --today_range-over--|--today_range_in--|--today_range_in--|--today_range_over--
+
+ ===============================================================================
+```
 
 ### action
 Email Sender
 * See sample/sample.yaml file
 * type is email
-* smpt server and account setting is required
+* SMTP server and account setting is required
 * $import_data keyword of msg setting contains analyzed data
 * import_data setting can include the excel column
 
@@ -102,13 +112,13 @@ analyzer:
             column_type: date
             row_startline: 9
             condition: today_equal
-            value: -3
+            value: -30
     - group_b:
         - test2:
             column_name: f
             column_type: date
             row_startline: 9
-            condition: today_equal
+            condition: today_range_in
             value: -5
 action:
     type: email
@@ -127,6 +137,8 @@ action:
             $import_data
             감사합니다.
 ```
+* group_a and group_b is 'or' logic operation.
+* msg of action is email contents.
 
 
 ### Execute
