@@ -1,4 +1,7 @@
-# excellent ![Python 3](https://img.shields.io/badge/python-3-blue.svg)
+[![Build Status](https://travis-ci.org/morenice/excellent.svg?branch=master)](https://travis-ci.org/morenice/excellent)
+
+
+# excellent
 
 excellent is excel third-party program
 
