@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/morenice/excellent.svg?branch=master)](https://travis-ci.org/morenice/excellent)
-
+[![Coverage Status](https://coveralls.io/repos/github/morenice/excellent/badge.svg)](https://coveralls.io/github/morenice/excellent)
 
 # excellent
 
